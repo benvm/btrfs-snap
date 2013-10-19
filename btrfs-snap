@@ -17,7 +17,7 @@ USAGE="Usage: ${prog} -h for usage help
        ${prog} -V for version
        ${prog} [options] <mountpoint> <prefix> <count>"
 SYNOPSIS="${prog} [options] <mountpoint> <prefix> <count>
-<mountpoint> is the mountpoint of the btrfs file system to make a
+<mountpoint> is the mountpoint or subvolume of the btrfs file system to make a
              snapshot of
 <prefix>     is the prefix to be used in the name of the snapshot.
              E.g. hourly, daily, weekly...
@@ -96,8 +96,11 @@ cnt=$(( $3+1 ))
 
 mount -t btrfs | cut -d " " -f 3 | grep "^${mp}$" > /dev/null
 if [ $? -ne 0 ] ; then
-	echo "Error: ${mp} is not a btrfs mountpoint"
-	exit 1
+        /sbin/btrfs subvolume list ${mp} > /dev/null
+        if [ $? -ne 0 ] ; then
+                echo "ERROR: ${mp} is neither a btrfs mountpoint nor a subvolume: Exiting"
+                exit 1
+        fi
 fi
 
 if [ "x$base" == "x" ]

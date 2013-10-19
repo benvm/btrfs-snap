@@ -16,7 +16,7 @@ Usage
 
 btrfs-snap [-r] [-b basedir] mountpoint prefix count
 
-* mountpoint is the filesystem to snapshot (must be found in the output of 'mount -t btrfs')
+* mountpoint is the filesystem to snapshot (must be found in the output of 'mount -t btrfs' or 'btrfs subvolume list mountpoint')
 * prefix is the prefix, which usually corresponds to a schedule (e.g. 1m, 5m, 3h, 1d, 1w, 3mo)
 * count is the number of snapshots with the same prefix to keep
 * -r makes the snapshot readonly (requires btrfs-tools v0.20)
